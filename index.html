@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkify Vendor Sheet Converter</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- PRIMARY SheetJS Library (To read/write Excel) -->
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Linkify Vendor Sheet Converter 🔄</h1>
+        <p>Convert guest post vendor spreadsheets into the standard Linkify format.</p>
+
+        <!-- Configuration Settings -->
+        <div class="card bg-light">
+            <h2>⚙️ Pricing Rules & Settings</h2>
+            <button id="toggleSettingsBtn">Show / Edit Pricing Rules</button>
+            <div id="settingsArea" style="display: none; margin-top: 15px;">
+                <div class="settings-grid">
+                    <div>
+                        <h3>PKR Rules</h3>
+                        <p>If Original PKR >= <input type="number" id="pkrThresh1" value="4000">, add <input type="number" id="pkrAdd1" value="500"></p>
+                        <p>If Original PKR >= <input type="number" id="pkrThresh2" value="2000">, add <input type="number" id="pkrAdd2" value="300"></p>
+                        <p>If Original PKR >= <input type="number" id="pkrThresh3" value="1000">, add <input type="number" id="pkrAdd3" value="300"></p>
+                    </div>
+                    <div>
+                        <h3>USD Rules (Divisor: <input type="number" id="usdDivisor" value="230" style="width: 70px;">)</h3>
+                        <p>If Original PKR > <input type="number" id="usdThresh1" value="5000">, add <input type="number" id="usdAdd1" value="5"></p>
+                        <p>If Original PKR > <input type="number" id="usdThresh2" value="1500">, add <input type="number" id="usdAdd2" value="3"></p>
+                        <p>If Original PKR >= <input type="number" id="usdThresh3" value="1000">, add <input type="number" id="usdAdd3" value="2"></p>
+                        <p>Currency Prefix: <input type="text" id="currencyPrefix" value="$" style="width: 50px;"></p>
+                    </div>
+                </div>
+                <button id="restoreDefaultsBtn" class="secondary-btn">Restore Defaults</button>
+            </div>
+        </div>
+
+        <!-- Stage 1: File Upload / Google Sheet -->
+        <div class="card">
+            <h2>1. Import Vendor Data</h2>
+            
+            <div class="import-tabs">
+                <button id="tabExcelBtn" class="tab-btn active">Upload Excel File</button>
+                <button id="tabGoogleBtn" class="tab-btn">Google Sheets URL</button>
+            </div>
+
+            <div id="uploadExcelSection">
+                <input type="file" id="fileUpload" accept=".xlsx, .xls" />
+            </div>
+
+            <div id="googleSheetSection" style="display: none;">
+                <input type="text" id="googleUrlInput" placeholder="Paste Public Google Sheets URL here..." style="width: 100%;">
+                <button id="fetchGoogleBtn" style="margin-top: 10px;">Fetch Google Sheet</button>
+                <p id="googleErrorMsg" class="danger-text" style="display: none;"></p>
+            </div>
+            
+            <div id="sheetSelectionArea" style="display: none; margin-top: 15px;">
+                <label for="sheetSelect"><strong>Select Worksheet:</strong></label>
+                <select id="sheetSelect"></select>
+                
+                <label for="headerRow" style="margin-left: 15px;"><strong>Headers are on Row:</strong></label>
+                <input type="number" id="headerRow" value="1" min="1" style="width: 60px;">
+
+                <button id="loadSheetBtn" style="margin-left: 10px;">Load Data</button>
+            </div>
+        </div>
+
+        <!-- Stage 2: Mapping -->
+        <div class="card" id="mappingArea" style="display: none;">
+            <h2>2. Confirm Column Mapping</h2>
+            <div class="warning-box">
+                <strong>⚠️ Critical:</strong> Ensure the <em>Price (PKR)</em> points to the ORIGINAL Vendor PKR price. Do not point it to USD.
+            </div>
+            <div class="table-responsive">
+                <table class="mapping-table">
+                    <thead><tr><th>Linkify Required Column</th><th>Vendor's Column</th><th>Sample Data</th></tr></thead>
+                    <tbody id="mappingBody"></tbody>
+                </table>
+            </div>
+            <button id="confirmMappingBtn" style="margin-top: 15px;">Calculate Prices & Preview</button>
+        </div>
+
+        <!-- Stage 3: Preview & Final Export -->
+        <div class="card" id="processingArea" style="display: none;">
+            <h2>3. Final Preview & Export</h2>
+            <div class="stats-container">
+                <div class="stat-box"><strong>Total Rows:</strong> <span id="statTotal">0</span></div>
+                <div class="stat-box success"><strong>Valid & Clean:</strong> <span id="statValid">0</span></div>
+                <div class="stat-box warning"><strong>Duplicates Dropped:</strong> <span id="statDuplicates">0</span></div>
+                <div class="stat-box danger"><strong>Invalid Dropped:</strong> <span id="statInvalid">0</span></div>
+            </div>
+            
+            <h3>Final Calculated Data (First 5 rows preview)</h3>
+            <div class="table-responsive">
+                <table id="cleanDataTable">
+                    <thead id="cleanTableHead"></thead>
+                    <tbody id="cleanTableBody"></tbody>
+                </table>
+            </div>
+            <button id="exportExcelBtn" class="success-btn" style="margin-top: 20px; font-size: 18px; width: 100%;">💾 Download Linkify Excel File</button>
+        </div>
+    </div>
+    
+    <!-- IMPORTANT: app.js must be at the very bottom -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.container { max-width: 1000px; margin: 0 auto; }
+.card { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 25px; }
+.bg-light { background-color: #f8f9fa; border: 1px solid #e9ecef; }
+
+input[type="file"], input[type="text"], input[type="number"], select {
+    padding: 8px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px;
+}
+input[type="number"] { width: 80px; }
+
+button {
+    background-color: #007bff; color: white; border: none; border-radius: 4px; 
+    padding: 10px 15px; cursor: pointer; font-size: 15px; font-weight: bold;
+}
+button:hover { background-color: #0056b3; }
+.secondary-btn { background-color: #6c757d; }
+.secondary-btn:hover { background-color: #5a6268; }
+.success-btn { background-color: #28a745; }
+.success-btn:hover { background-color: #218838; }
+
+.import-tabs { margin-bottom: 15px; border-bottom: 2px solid #ddd; display: flex; }
+.tab-btn { background: none; color: #555; border-radius: 0; margin-right: 10px; border-bottom: 3px solid transparent; }
+.tab-btn.active { color: #007bff; border-bottom: 3px solid #007bff; }
+
+.table-responsive { overflow-x: auto; margin-top: 15px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
+th { background-color: #e9ecef; }
+
+.warning-box { background-color: #fff3cd; color: #856404; padding: 12px; border-left: 4px solid #ffeeba; margin-bottom: 15px; border-radius: 4px; }
+.sample-data { color: #666; font-style: italic; }
+.danger-text { color: #dc3545; font-weight: bold; }
+
+.stats-container { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-box { background-color: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 5px solid #ccc; flex: 1; min-width: 160px; font-size: 16px;}
+.stat-box.success { border-left-color: #28a745; }
+.stat-box.warning { border-left-color: #ffc107; }
+.stat-box.danger { border-left-color: #dc3545; }
+.settings-grid { display: flex; gap: 40px; margin-bottom: 15px; }
